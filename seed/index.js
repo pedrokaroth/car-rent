@@ -1,6 +1,6 @@
 const { faker } = require('@faker-js/faker');
 const CarCategory = require('../src/entities/CarCategory');
-const Costumer = require('../src/entities/Costumer');
+const Customer = require('../src/entities/Customer');
 const Car = require('../src/entities/Car');
 const { writeFile, mkdir } = require('fs/promises');
 const { existsSync } = require('fs')
@@ -17,7 +17,7 @@ const carCategory = new CarCategory({
 })
 
 const cars = []
-const costumers = []
+const customers = []
 
 for (let x = 0; x < 50; x++) {
   const car = new Car({
@@ -28,7 +28,7 @@ for (let x = 0; x < 50; x++) {
     releaseYear: faker.date.past().getFullYear()
   })
 
-  const costumer = new Costumer({
+  const customer = new Customer({
     id: faker.string.uuid(),
     age: faker.number.int({ min: 18, max: 100 }),
     name: faker.person.fullName()
@@ -37,7 +37,7 @@ for (let x = 0; x < 50; x++) {
   carCategory.carIds.push(car.id)
 
   cars.push(car)
-  costumers.push(costumer)
+  customers.push(customer)
 }
 
 const write = async (model, value) => writeFile(join(__dirname, '../', 'database', `${model}.json`), JSON.stringify(value))
@@ -48,6 +48,6 @@ const write = async (model, value) => writeFile(join(__dirname, '../', 'database
   await Promise.all([
     write('carCategory', carCategory),
     write('cars', cars),
-    write('costumers', costumers)
+    write('customers', customers)
   ])
 })()

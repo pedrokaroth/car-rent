@@ -2,9 +2,11 @@ const { describe, test } = require('mocha')
 const CarService = require('../../src/service/CarService')
 const { expect } = require('chai')
 const { createSandbox } = require('sinon')
+
 const mocks = {
   carCategory: require('../mocks/valid-car-category'),
-  car: require('../mocks/valid-car')
+  car: require('../mocks/valid-car'),
+  customer: require('../mocks/valid-customer')
 }
 
 describe('Car service suite test', () => {
@@ -52,7 +54,6 @@ describe('Car service suite test', () => {
 
     expect(response).to.be.eq(expected)
   })
-
   test('It Should return a available car', async () => {
     const car = mocks.car
     const carCategory = Object.create(mocks.carCategory)
@@ -63,5 +64,17 @@ describe('Car service suite test', () => {
     const expected = car
 
     expect(response).to.be.deep.equal(expected)
+  })
+  test('Given a car category, customer and numberOfDays it should calculate final amount in real', () => {
+    const customer = Object.create(mocks.customer)
+    customer.age = 50
+
+    const carCategory = Object.create(mocks.carCategory)
+    carCategory.price = 37.6
+
+    const response = carService.calculateFinalPrice(customer, carCategory, 5)
+    const expected = carService.moneyFormat(244.40)
+
+    expect(response).to.be.equal(expected)
   })
 })

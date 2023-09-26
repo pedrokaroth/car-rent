@@ -1,4 +1,4 @@
-class Costumer {
+class Customer {
   constructor({ id, name, age }) {
     this.id = id
     this.name = name
@@ -6,4 +6,4 @@ class Costumer {
   }
 }
 
-module.exports = Costumer
+module.exports = Customer
