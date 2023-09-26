@@ -21,8 +21,8 @@ const costumers = []
 
 for (let x = 0; x < 50; x++) {
   const car = new Car({
-    available: faker.number.int({ min: 0, max: 1 }),
-    gasAvailable: faker.number.int({ min: 0, max: 1 }),
+    available: true,
+    gasAvailable: true,
     id: faker.string.uuid(),
     name: faker.vehicle.model(),
     releaseYear: faker.date.past().getFullYear()
