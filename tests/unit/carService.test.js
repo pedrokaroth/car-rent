@@ -1,5 +1,6 @@
 const { describe, test } = require('mocha')
 const CarService = require('../../src/service/CarService')
+const Transaction = require('../../src/entities/Transaction')
 const { expect } = require('chai')
 const { createSandbox } = require('sinon')
 
@@ -76,5 +77,37 @@ describe('Car service suite test', () => {
     const expected = carService.moneyFormat(244.40)
 
     expect(response).to.be.equal(expected)
+  })
+
+  test('Given a car category, customer and numberOfDays, it should return data, the car selected, final price in real, and the dueDate printed in Brazilian portuguese', async () => {
+    const customer = Object.create(mocks.customer)
+    customer.age = 50
+
+    const carCategory = Object.create(mocks.carCategory)
+    carCategory.price = 37.6
+
+    const car = mocks.car
+
+    carCategory.carIds = [car.id]
+
+    const dateTest = new Date(2020, 10, 5)
+    sandbox.useFakeTimers(dateTest)
+
+    const numberOfDays = 5
+
+    const dueDate = dateTest.setDate(dateTest.getDate() + numberOfDays)
+    const result = await carService.rent(customer, carCategory, numberOfDays)
+
+    const finalPrice = carService.moneyFormat(244.40)
+    const formattedDate = carService.dateFormat(dueDate)
+
+    const expected = new Transaction(
+      customer,
+      car,
+      finalPrice,
+      formattedDate,
+    )
+
+    expect(result).to.be.deep.equal(expected)
   })
 })
